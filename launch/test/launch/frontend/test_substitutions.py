@@ -50,13 +50,25 @@ def parse_test_substitution(data):
     return TextSubstitution, kwargs
 
 
+def test_space_next_to_substitutions():
+    # substitutions should concatenate with surrounding text that are not whitespace
+    subst = parse_substitution('$(test foo)_bar_ _bar_$(test baz)')
+    assert len(subst) == 2
+    assert subst[0].perform(None) == 'foo_bar_'
+    assert subst[1].perform(None) == '_bar_baz'
+    subst = parse_substitution('$(test foo) _bar_ _bar_ $(test baz)')
+    assert len(subst) == 4
+    assert subst[0].perform(None) == 'foo'
+    assert subst[0].perform(None) == '_bar_'
+    assert subst[0].perform(None) == '_bar_'
+    assert subst[1].perform(None) == 'baz'
+
+
 def test_text_with_embedded_substitutions():
     subst = parse_substitution('why_$(test asd)_asdasd_$(test bsd)')
-    assert len(subst) == 4
-    assert subst[0].perform(None) == 'why_'
-    assert subst[1].perform(None) == 'asd'
-    assert subst[2].perform(None) == '_asdasd_'
-    assert subst[3].perform(None) == 'bsd'
+    assert len(subst) == 1
+    assert subst[0].perform(None) == 'why_asd_asdasd_bsd'
+
 
 # TODO(ivanpauno): Don't deppend on substitution parsing methods for testing the interpolator.
 # Write some dummy substitutions and parsing methods instead.
