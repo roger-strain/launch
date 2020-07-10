@@ -671,12 +671,12 @@ class ExecuteProcess(Action):
 
         def on_stdout_received(self, data: bytes) -> None:
             import sys
-            print('stdout', data, file=sys.stderr)
+            print('stdout', '<', data, '>', file=sys.stderr)
             self.__context.emit_event_sync(ProcessStdout(text=data, **self.__process_event_args))
 
         def on_stderr_received(self, data: bytes) -> None:
             import sys
-            print('stderr', data, file=sys.stderr)
+            print('stderr', '<', data, '>', file=sys.stderr)
             self.__context.emit_event_sync(ProcessStderr(text=data, **self.__process_event_args))
 
     def __expand_substitutions(self, context):
