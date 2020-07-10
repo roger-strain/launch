@@ -352,7 +352,7 @@ class LaunchService:
                             done, pending = await asyncio.wait(
                                 entity_futures,
                                 timeout=1.0,
-                                return_when=asyncio.FIRST_COMPLETED
+                                return_when=asyncio.ALL_COMPLETED
                             )
                             import sys
                             print('shutting down', 'done', len(done), done, 'pending', len(pending), pending, file=sys.stderr)
