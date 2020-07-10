@@ -269,6 +269,8 @@ class LaunchService:
                 self.__shutting_down = False
 
     async def _process_one_event(self) -> None:
+        import sys
+        print('_process_one_event', self.__context._event_queue.qsize(), file=sys.stderr)
         next_event = await self.__context._event_queue.get()
         await self.__process_event(next_event)
 
@@ -276,6 +278,8 @@ class LaunchService:
         self.__logger.debug("processing event: '{}'".format(event))
         for event_handler in tuple(self.__context._event_handlers):
             if event_handler.matches(event):
+                import sys
+                print('__process_event', event_handler, event, file=sys.stderr)
                 self.__logger.debug(
                     "processing event: '{}' ✓ '{}'".format(event, event_handler))
                 self.__context._push_locals()
@@ -330,6 +334,8 @@ class LaunchService:
             this_loop.set_exception_handler(_on_exception)
 
             while True:
+                import sys
+                print('while True', 'queue size', self.__context._event_queue.qsize(), file=sys.stderr)
                 try:
                     # Check if we're idle, i.e. no on-going entities (actions) or events in
                     # the queue
@@ -398,11 +404,15 @@ class LaunchService:
         return run_async_task.result()
 
     def __on_shutdown(self, event: Event, context: LaunchContext) -> Optional[SomeActionsType]:
+        import sys
+        print('__on_shutdown', file=sys.stderr)
         self.__shutting_down = True
         self.__context._set_is_shutdown(True)
         return None
 
     def _shutdown(self, *, reason, due_to_sigint, force_sync=False) -> Optional[Coroutine]:
+        import sys
+        print('_shutdown', file=sys.stderr)
         # Assumption is that this method is only called when running.
         retval = None
         if not self.__shutting_down:

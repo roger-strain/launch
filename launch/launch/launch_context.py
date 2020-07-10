@@ -173,11 +173,15 @@ class LaunchContext:
         """Emit an event synchronously."""
         self.__logger.debug("emitting event synchronously: '{}'".format(event.name))
         self._event_queue.put_nowait(event)
+        import sys
+        print('emit_event_sync', self._event_queue.qsize(), event, file=sys.stderr)
 
     async def emit_event(self, event: Event) -> None:
         """Emit an event."""
         self.__logger.debug("emitting event: '{}'".format(event.name))
         await self._event_queue.put(event)
+        import sys
+        print('emit_event', self._event_queue.qsize(), event, file=sys.stderr)
 
     def perform_substitution(self, substitution: Substitution) -> Text:
         """Perform substitution on given Substitution."""
