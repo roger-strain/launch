@@ -354,6 +354,8 @@ class LaunchService:
                                 timeout=1.0,
                                 return_when=asyncio.FIRST_COMPLETED
                             )
+                            import sys
+                            print('shutting down', 'done', len(done), done, 'pending', len(pending), pending, file=sys.stderr)
                             if not done:
                                 self.__logger.debug(
                                     'still waiting on futures: {}'.format(entity_futures)
@@ -375,6 +377,8 @@ class LaunchService:
                     return_code = 1
                     # keep running to let things shutdown properly
                     continue
+            import sys
+            print('shut down', 'remaining queue size', self.__context._event_queue.qsize(), file=sys.stderr)
             return return_code
 
     def run(self, *, shutdown_when_idle=True) -> int:
