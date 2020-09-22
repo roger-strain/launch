@@ -16,6 +16,7 @@
 
 from .declare_launch_argument import DeclareLaunchArgument
 from .emit_event import EmitEvent
+from .execute_local import ExecuteLocal
 from .execute_process import ExecuteProcess
 from .group_action import GroupAction
 from .include_launch_description import IncludeLaunchDescription
@@ -36,6 +37,7 @@ from .unset_launch_configuration import UnsetLaunchConfiguration
 __all__ = [
     'DeclareLaunchArgument',
     'EmitEvent',
+    'ExecuteLocal',
     'ExecuteProcess',
     'GroupAction',
     'IncludeLaunchDescription',
