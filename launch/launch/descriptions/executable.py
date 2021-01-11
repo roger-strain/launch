@@ -31,6 +31,7 @@ from typing import List
 from typing import Optional
 from typing import Tuple
 
+from launch import Action
 from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitution import Substitution
 from launch.substitutions import LaunchConfiguration
@@ -147,7 +148,7 @@ class Executable:
         """Getter for final_env."""
         return self.__final_env
 
-    def apply_context(self, context: LaunchContext):
+    def apply_context(self, context: LaunchContext, action: Action, cmd: list):
         """
         Prepare an executable description for execution in a given environment.
 
