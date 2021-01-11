@@ -38,16 +38,16 @@ class OnProcessIO(BaseEventHandler):
     def __init__(
         self,
         *,
-        target_action: Optional['ExecuteProcess'] = None,
+        target_action: Optional['ExecuteLocal'] = None,
         on_stdin: Callable[[ProcessIO], Optional[SomeActionsType]] = None,
         on_stdout: Callable[[ProcessIO], Optional[SomeActionsType]] = None,
         on_stderr: Callable[[ProcessIO], Optional[SomeActionsType]] = None,
         **kwargs
     ) -> None:
         """Create an OnProcessIO event handler."""
-        from ..actions import ExecuteProcess  # noqa
-        if not isinstance(target_action, (ExecuteProcess, type(None))):
-            raise TypeError("OnProcessIO requires an 'ExecuteProcess' action as the target")
+        from ..actions import ExecuteLocal  # noqa
+        if not isinstance(target_action, (ExecuteLocal, type(None))):
+            raise TypeError("OnProcessIO requires an 'ExecuteLocal' action as the target")
         super().__init__(matcher=self._matcher, **kwargs)
         self.__target_action = target_action
         self.__on_stdin = on_stdin
@@ -95,6 +95,6 @@ class OnProcessIO(BaseEventHandler):
         """Return the string description of the matcher."""
         if self.__target_action is None:
             return 'event issubclass of ProcessIO'
-        return 'event issubclass of ProcessIO and event.action == ExecuteProcess({})'.format(
+        return 'event issubclass of ProcessIO and event.action == ExecuteLocal({})'.format(
             hex(id(self.__target_action))
         )

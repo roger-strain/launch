@@ -31,7 +31,7 @@ from ..launch_description_entity import LaunchDescriptionEntity
 from ..some_actions_type import SomeActionsType
 
 if TYPE_CHECKING:
-    from ..actions import ExecuteProcess  # noqa: F401
+    from ..actions import ExecuteLocal  # noqa: F401
 
 
 class OnProcessExit(BaseEventHandler):
@@ -45,15 +45,15 @@ class OnProcessExit(BaseEventHandler):
     def __init__(
         self,
         *,
-        target_action: 'ExecuteProcess' = None,
+        target_action: 'ExecuteLocal' = None,
         on_exit: Union[SomeActionsType,
                        Callable[[ProcessExited, LaunchContext], Optional[SomeActionsType]]],
         **kwargs
     ) -> None:
         """Create an OnProcessExit event handler."""
-        from ..actions import ExecuteProcess  # noqa
-        if not isinstance(target_action, (ExecuteProcess, type(None))):
-            raise TypeError("OnProcessExit requires an 'ExecuteProcess' action as the target")
+        from ..actions import ExecuteLocal  # noqa
+        if not isinstance(target_action, (ExecuteLocal, type(None))):
+            raise TypeError("OnProcessExit requires an 'ExecuteLocal' action as the target")
         super().__init__(
             matcher=(
                 lambda event: (
@@ -109,6 +109,6 @@ class OnProcessExit(BaseEventHandler):
         """Return the string description of the matcher."""
         if self.__target_action is None:
             return 'event == ProcessExited'
-        return 'event == ProcessExited and event.action == ExecuteProcess({})'.format(
+        return 'event == ProcessExited and event.action == ExecuteLocal({})'.format(
             hex(id(self.__target_action))
         )
